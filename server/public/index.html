@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Url shortner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Shorten your urls</h1>
+    </header>
+    <main class="main">
+        <form action="" class="form" autocomplete="off" onsubmit ="event.preventDefault(); submitted()">
+            <input type="text" autocomplete="off" name="url" id="urlInput" placeholder="Enter a url" class="input">
+            <input type="text" autocomplete="off" name="slug" id="slugInput" placeholder="Enter a slug" class="input">
+            <button type="submit" class="button" >Create</button>
+        </form>
+    </main>
+<script src="./index.js"></script>
+</body>
+</html>
