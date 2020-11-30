@@ -6,8 +6,6 @@ const dotenv = require("dotenv");
 const { nanoid } = require("nanoid");
 
 const hostname = "127.0.0.1";
-// const morgan
-// const helmet
 
 dotenv.config();
 
