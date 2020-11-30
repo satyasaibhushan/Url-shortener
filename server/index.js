@@ -4,6 +4,8 @@ const yup = require("yup");
 const monk = require("monk");
 const dotenv = require("dotenv");
 const { nanoid } = require("nanoid");
+
+const hostname = "127.0.0.1";
 // const morgan
 // const helmet
 
@@ -77,7 +79,8 @@ app.use((error, req, res, next) => {
   });
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`listening at http://localhost:${port}`);
+const listener = app.listen(process.env.PORT || 3000, function () {
+  let { family, address, port } = listener.address();
+  address = address == "::" ? "localhost" : address;
+  console.log(`app is listening on: ${family}:${address}:${port}`);
 });
