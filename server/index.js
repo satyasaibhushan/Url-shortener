@@ -18,12 +18,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
+app.use('/error', express.static('error'))
 
 app.get("/", (req, res) => {
   res.json({
     message: "shorten your urls",
   });
 });
+
+app.get("/urls", async (req, res) => {
+  //get info
+});
+
 app.get("/:id", async (req, res) => {
   let { id: slug } = req.params;
 
@@ -31,7 +37,7 @@ app.get("/:id", async (req, res) => {
     const url = await urls.findOne({ slug });
     if (url) {
       res.redirect(url.url);
-    } else res.redirect(`/?error=${slug} not found`);
+    } else res.redirect(`/error`);
   } catch (error) {
     res.redirect(`/?error=Link not found`);
   }
@@ -64,9 +70,6 @@ app.post("/url", async (req, res, next) => {
   }
 });
 
-app.get("/url/:id", async (req, res) => {
-  //get info
-});
 app.use((error, req, res, next) => {
   if (error.status) {
     res.status(error.status);
