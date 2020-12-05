@@ -4,6 +4,8 @@ const yup = require("yup");
 const monk = require("monk");
 const dotenv = require("dotenv");
 const { nanoid } = require("nanoid");
+const CLIENT_ID = '342980464169-2jqomrchsthgjpdafk50ba8akj22g2v0.apps.googleusercontent.com';
+const cookieParser = require('cookie-parser');
 
 const hostname = "127.0.0.1";
 
@@ -18,7 +20,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
-app.use('/error', express.static('error'))
+app.use('/error', express.static('error'));
+app.use(cookieParser());
+const isLoggedin = (req,res,next)=>{
+  req.user ? next():next() ;
+}
 
 app.get("/", (req, res) => {
   res.json({
@@ -30,7 +36,7 @@ app.get("/urls", async (req, res) => {
   //get info
 });
 
-app.get("/:id", async (req, res) => {
+app.get("/:id",isLoggedin, async (req, res) => {
   let { id: slug } = req.params;
 
   try {
@@ -69,6 +75,22 @@ app.post("/url", async (req, res, next) => {
     next(error);
   }
 });
+app.post("/tokenVerify",async (req,res,next)=>{
+  let {id_token:token} = req.body;
+  const {OAuth2Client} = require('google-auth-library');
+  const client = new OAuth2Client(CLIENT_ID);
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    if(userid == '117443434510256381405')res.json({isValid:true})
+    else res.json({isValid:false})
+  }
+  verify().catch(console.error);
+})
 
 app.use((error, req, res, next) => {
   if (error.status) {
