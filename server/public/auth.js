@@ -12,7 +12,7 @@ var initSigninV2 = function() {
     auth2 = gapi.auth2.init({
         client_id: '342980464169-2jqomrchsthgjpdafk50ba8akj22g2v0.apps.googleusercontent.com',
         scope: 'profile',
-        // ux_mode: 'redirect',
+        ux_mode: 'redirect',
     })
     auth2.then((googleUser)=>{
         if(auth2.isSignedIn.get()!=true ){
