@@ -34,7 +34,8 @@ app.get("/", (req, res) => {
 
 app.get("/urls", async (req, res) => {
   let url = await urls.find();
-  url = url.map(ele=>{return {slug:ele.slug,url:ele.url}})
+  url = url.map(ele=>{return {slug:ele.slug,url:ele.url,count:ele.count?ele.count:0}})
+  url = url.sort((a,b)=> (b.count?b.count:0)-(a.count?a.count:0))
   await res.json(url);
 });
 
@@ -45,6 +46,8 @@ app.get("/:id",isLoggedin, async (req, res) => {
     const url = await urls.findOne({ slug });
     if (url) {
       res.redirect(url.url);
+      if(url.count>=0) await  urls.update({ slug}, { $inc: { count: 1 } })
+      else await urls.update({slug},{$set:{count:1}})
     } else res.redirect(`/error`);
   } catch (error) {
     console.log(error)
@@ -67,7 +70,7 @@ app.post("/url", async (req, res, next) => {
       slug = nanoid(5);
     }
     slug = slug.toLowerCase();
-    const newUrl = { slug, url };
+    const newUrl = { slug, url, count:0 };
     const created = await urls.insert(newUrl);
     res.json(created);
   } catch (error) {

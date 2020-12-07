@@ -41,6 +41,7 @@ let getUrls = async () => {
           row = table.insertRow();
           cell1 = row.insertCell(0);
           cell2 = row.insertCell(1);
+          cell3 = row.insertCell(2);
 
           a = document.createElement("a");
           link = document.createTextNode("links.bhushan.fun/" + element.slug);
@@ -55,6 +56,13 @@ let getUrls = async () => {
           a.title = element.url;
           a.href = element.url;
           cell2.appendChild(a);
+
+          a = document.createElement("a");
+          link = document.createTextNode(element.count);
+          a.appendChild(link);
+          a.title = element.count;
+          a.href = element.count;
+          cell3.appendChild(a);
         });
       });
   } else {
