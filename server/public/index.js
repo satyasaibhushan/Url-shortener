@@ -41,29 +41,19 @@ let getUrls = async () => {
           row = table.insertRow();
           cell1 = row.insertCell(0);
           cell2 = row.insertCell(1);
-          // cell1.innerHTML = "links.bhushan.fun/"+element.slug;
+
           a = document.createElement("a");
           link = document.createTextNode("links.bhushan.fun/" + element.slug);
           a.appendChild(link);
           a.title = "links.bhushan.fun/" + element.slug;
           a.href = "https://links.bhushan.fun/" + element.slug;
           cell1.appendChild(a);
-          a.onclick =()=>{ window.dataLayer.push({
-            event: "linkvisited",
-            link: "https://links.bhushan.fun/" + element.slug,
-            type: "ClickedShortenedLink",
-          });}
 
           a = document.createElement("a");
           link = document.createTextNode(element.url);
           a.appendChild(link);
           a.title = element.url;
           a.href = element.url;
-          a.onclick = ()=>{window.dataLayer.push({
-            event: "linkvisited",
-            link: element.url,
-            type: "ClickedDirectLink",
-          });}
           cell2.appendChild(a);
         });
       });
