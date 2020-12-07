@@ -4,9 +4,9 @@
   padding: 0;
 }
 
-html {
+/* html {
   height: 100%;
-}
+} */
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -40,8 +40,8 @@ header {
   margin: 1rem 0;
   text-align: center;
   padding-bottom: 1rem;
-  border-bottom: 2px solid blue;
-  caret-color: blue;
+  border-bottom: 2px solid #5252fd;
+  caret-color: #5252fd;
   transition: border-bottom-color 0.4s ease-in-out;
   color:white;
 }
@@ -59,4 +59,79 @@ header {
   padding: 1rem;
   font-size:1.2rem ;
   background-color:rgb(85,189,89);
+}
+
+table { 
+	width: 750px; 
+	border-collapse: collapse; 
+	margin:50px auto;
+	}
+
+tr:nth-of-type(odd) { 
+	background: rgb(46, 46, 46); 
+  }
+  tr:nth-of-type(even) { 
+    background: rgb(46, 46, 46); 
+    }
+
+th { 
+	background: rgb(46, 46, 46); 
+	color: rgb(85,189,89); 
+	font-weight: bold; 
+	}
+
+td, th { 
+	padding: 10px; 
+	border: 1px solid #5252fd; 
+	text-align: left; 
+	font-size: 18px;
+	}
+
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	table { 
+	  	width: 100%; 
+	}
+
+	/* table, thead, tbody, th, td, tr { 
+		display: block; 
+	} */
+	
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #5252fd; }
+	
+	td { 
+		border: none;
+    border-bottom: 1px solid #5252fd; 
+    border-right: 1px solid #5252fd;
+		position: relative;
+		/* padding-left: 50%;  */
+	}
+
+	td:before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		content: attr(data-column);
+
+		color: #000;
+		font-weight: bold;
+	}
+
+}
+
+table a{
+  text-decoration: none;
+  color: rgb(85,189,89);
 }
