@@ -55,6 +55,7 @@ let signIn = async()=>{
           if(isValid){
               console.log("You are allowed");
               verified = true;
+              getUrls();
               return true
           }
           else{
@@ -71,5 +72,3 @@ function signOut() {
       console.log('User signed out.');
     })
 }
-
-

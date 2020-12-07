@@ -9,7 +9,7 @@
     <script src="./auth.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
-<body onload="appStart()">
+<body onload="appStart();">
     <header>
         <h1>Shorten your urls</h1>
     </header>
@@ -19,6 +19,12 @@
             <input type="text" autocomplete="off" name="slug" id="slugInput" placeholder="Enter a slug" class="input">
             <button type="submit" class="button" >Create</button>
         </form>
+        <table id = "urlsTable" style="display: none;">
+            <tr>
+                <th>Url</th>
+                <th>Redirects to</th>
+              </tr>
+        </table>
     </main>
     <!-- <a class="a" href="#"onclick="signIn()" >Sign in</a>
     <a href="#" onclick="signOut()">Sign out</a> -->

@@ -33,7 +33,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", async (req, res) => {
-  //get info
+  let url = await urls.find();
+  url = url.map(ele=>{return {slug:ele.slug,url:ele.url}})
+  await res.json(url);
 });
 
 app.get("/:id",isLoggedin, async (req, res) => {
@@ -45,7 +47,7 @@ app.get("/:id",isLoggedin, async (req, res) => {
       res.redirect(url.url);
     } else res.redirect(`/error`);
   } catch (error) {
-    res.redirect(`/?error=Link not found`);
+    console.log(error)
   }
 });
 
