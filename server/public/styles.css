@@ -135,3 +135,34 @@ table a{
   text-decoration: none;
   color: rgb(85,189,89);
 }
+table a:hover{
+  color: #5252fd;
+}
+table a:active{
+  color: red;
+}
+table div{
+  text-decoration: none;
+  color: rgb(85,189,89);
+  cursor: default;
+}
+
+.deleteIcon{
+  width: 20px;
+  margin: 5px 0 10px 5px;
+  height:20px;
+  cursor: pointer;
+}
+.deleteIconDiv{
+  width: 30px;
+  height: 30px;
+  background-color: rgba(243, 100, 95, 0.7);
+  opacity: 0;
+  border-radius: 50%;
+  transition: all 0.5s ease-in;
+  top: 5px;
+  position: relative;
+}
+tr:hover  .deleteIconDiv{
+  opacity: 1;
+}

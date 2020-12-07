@@ -38,6 +38,11 @@ app.get("/urls", async (req, res) => {
   url = url.sort((a,b)=> (b.count?b.count:0)-(a.count?a.count:0))
   await res.json(url);
 });
+app.get("/delete/:slug",async(req,res)=>{
+  let { slug } = req.params;
+   await urls.remove({slug:slug})
+   await res.json();
+})
 
 app.get("/:id",isLoggedin, async (req, res) => {
   let { id: slug } = req.params;

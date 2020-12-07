@@ -57,15 +57,36 @@ let getUrls = async () => {
           a.href = element.url;
           cell2.appendChild(a);
 
-          a = document.createElement("a");
+          a = document.createElement("div");
           link = document.createTextNode(element.count);
           a.appendChild(link);
           a.title = element.count;
           a.href = element.count;
           cell3.appendChild(a);
+
+          let div = document.createElement("div");
+          let x = document.createElement("IMG");
+          x.src="./delete.svg";
+          x.className="deleteIcon"
+          div.className = "deleteIconDiv"
+          div.appendChild(x);
+          row.appendChild(div);
+          div.onclick=()=>{
+            deleteUrl(element.slug);
+          }
         });
       });
   } else {
     alert("You are not allowed");
   }
 };
+
+deleteUrl=async(slug)=>{
+  await fetch(`/delete/${slug}`, {
+    mode: "cors",
+    credentials: "same-origin",
+    redirect: "follow",
+  }).then(()=>{
+    window.location.reload()
+  })
+}
