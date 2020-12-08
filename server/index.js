@@ -24,12 +24,13 @@ app.use('/error', express.static('error'));
 app.use(cookieParser());
 const isLoggedin = (req,res,next)=>{
   if(req.header('bearer-token')) {
-    if(verify(req.header('bearer-token'))){
-       next();}
-    else res.send(404)
+    verify(req.header('bearer-token'))
+      .then(response=>{
+        if(response) next();
+        else {console.log("rejected"); res.sendStatus(404)}
+      }) 
   }
-  else res.send(404) ;
-  
+  else res.sendStatus(404) ;
 }
 
 app.get("/", (req, res) => {
@@ -94,8 +95,10 @@ app.post("/url",isLoggedin, async (req, res, next) => {
 });
 app.post("/tokenVerify",async (req,res,next)=>{
   let {id_token:token} = req.body;
-  if(verify(token))res.json({isValid:true})
-  else res.json({isValid:false})
+  verify(token).then(response=>{
+    if(response)res.json({isValid:true})
+    else res.json({isValid:false})
+  })
 })
 
 app.use((error, req, res, next) => {
@@ -115,6 +118,7 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 });
 
 async function verify(token) {
+  console.log("verifying")
   const {OAuth2Client} = require('google-auth-library');
   const client = new OAuth2Client(CLIENT_ID);
   const ticket = await client.verifyIdToken({
@@ -123,6 +127,6 @@ async function verify(token) {
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
-  if(userid == '117443434510256381405')return true
+  if(userid == '117443434510256381405' || userid=="105100410867317572025")return true
   else return false
 }
