@@ -31,6 +31,10 @@ header {
 .form {
   display: flex;
   flex-direction: column;
+  width: 400px; 
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 10px);
 }
 .input {
   background: none;
