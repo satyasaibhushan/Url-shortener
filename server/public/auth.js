@@ -21,13 +21,16 @@ var initSigninV2 = function() {
         else{
             googleUser = auth2.currentUser.ne;
             id_token = googleUser.getAuthResponse().id_token;
-            verify(id_token);
+            if(! verify(id_token))    window.location.replace('http://localhost:5000/error');
+
         }
     }).catch(err=>{
+        if(err.details=="Cookies are not enabled in current environment.")
+        alert("App cannot function in incognito mode/enable your cookies")
         console.log(err)
-        if(auth2.isSignedIn.get()!=true ){
-            signIn();
-        }
+        // if(auth2.isSignedIn.get()!=true ){
+        //     signIn();
+        // }
     })
 };
 
@@ -35,7 +38,8 @@ let signIn = async()=>{
     console.log("signing in");
     auth2.signIn().then(async (googleUser)=>{
         id_token = googleUser.getAuthResponse().id_token;
-         await verify(id_token);
+        if( !await verify(id_token))
+        window.location.replace('http://localhost:5000/error');
     })
 }
 
@@ -61,7 +65,7 @@ let signIn = async()=>{
           else{
             console.log("You are not allowed");
             // window.location.href = 'http://localhost:5000/error';
-            window.location.replace('http://localhost:5000/error');
+            return false
             //   window.redirect('../error');
           }
       })

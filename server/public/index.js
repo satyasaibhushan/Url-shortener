@@ -1,3 +1,7 @@
+// if(auth2){
+//   auth2.then()
+// }
+// id_token = googleUser.getAuthResponse().id_token;
 let submitted = async () => {
   if (auth2 && auth2.isSignedIn.get() == true && verified) {
     let form = document.getElementsByClassName("form")[0];
@@ -8,7 +12,7 @@ let submitted = async () => {
       method: "POST",
       mode: "cors",
       credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json","bearer-token":id_token},
       redirect: "follow",
       body: JSON.stringify({ url, slug }),
     })
@@ -31,6 +35,7 @@ let getUrls = async () => {
       mode: "cors",
       credentials: "same-origin",
       redirect: "follow",
+      headers:{"bearer-token":id_token}
     })
       .then(res => res.json())
       .then(x => {
@@ -82,11 +87,17 @@ let getUrls = async () => {
 };
 
 deleteUrl=async(slug)=>{
-  await fetch(`/delete/${slug}`, {
-    mode: "cors",
-    credentials: "same-origin",
-    redirect: "follow",
-  }).then(()=>{
-    window.location.reload()
-  })
+  if (auth2 && auth2.isSignedIn.get() == true) {
+    await fetch(`/delete/${slug}`, {
+      mode: "cors",
+      credentials: "same-origin",
+      redirect: "follow",
+      headers:{"bearer-token":id_token}
+    }).then(()=>{
+      window.location.reload()
+    })
+  }
+  else {
+    alert("You are not allowed");
+  }
 }
