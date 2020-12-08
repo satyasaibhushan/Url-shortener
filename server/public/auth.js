@@ -22,7 +22,6 @@ var initSigninV2 = function() {
             googleUser = auth2.currentUser.ne;
             id_token = googleUser.getAuthResponse().id_token;
             verify(id_token)
-
         }
     }).catch(err=>{
         if(err.details=="Cookies are not enabled in current environment.")
@@ -63,6 +62,7 @@ let signIn = async()=>{
           }
           else{
             console.log("You are not allowed");
+            signOut();
             window.location.href = 'http://localhost:5000/error';
             // window.redirect('../error');
             return false

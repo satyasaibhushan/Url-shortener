@@ -27,7 +27,7 @@ const isLoggedin = (req,res,next)=>{
     verify(req.header('bearer-token'))
       .then(response=>{
         if(response) next();
-        else {console.log("rejected"); res.sendStatus(404)}
+        else { res.sendStatus(404)}
       }) 
   }
   else res.sendStatus(404) ;
@@ -118,7 +118,6 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 });
 
 async function verify(token) {
-  console.log("verifying")
   const {OAuth2Client} = require('google-auth-library');
   const client = new OAuth2Client(CLIENT_ID);
   const ticket = await client.verifyIdToken({
