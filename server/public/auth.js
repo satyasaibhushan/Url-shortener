@@ -8,20 +8,20 @@ var appStart = function() {
     gapi.load('auth2', initSigninV2); 
 };
 
-var initSigninV2 = function() {
+var initSigninV2 = async ()=> {
     auth2 = gapi.auth2.init({
         client_id: '342980464169-2jqomrchsthgjpdafk50ba8akj22g2v0.apps.googleusercontent.com',
         scope: 'profile',
         ux_mode: 'redirect',
     })
-    auth2.then((googleUser)=>{
+    auth2.then(async(googleUser)=>{
         if(auth2.isSignedIn.get()!=true ){
-            signIn();
+          await signIn();
         }
         else{
             googleUser = auth2.currentUser.ne;
             id_token = googleUser.getAuthResponse().id_token;
-            verify(id_token)
+            await verify(id_token)
         }
     }).catch(err=>{
         if(err.details=="Cookies are not enabled in current environment.")
@@ -63,10 +63,14 @@ let signIn = async()=>{
           else{
             console.log("You are not allowed");
             signOut();
-            window.location.href = 'http://localhost:5000/error';
+            window.location.href = window.location.href+'error';
             // window.redirect('../error');
             return false
           }
+      })
+      .then(()=>{
+          loader = document.getElementsByClassName("loader")[0];
+          loader.style.display = "none";
       })
 }
 

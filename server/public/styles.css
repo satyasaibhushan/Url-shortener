@@ -7,7 +7,39 @@
 /* html {
   height: 100%;
 } */
+.loader{
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader img{
+  height: 25vmin;
+  animation: rotate 1s ;
+  animation-iteration-count: infinite;
+}
 
+.loader.hidden{
+  animation: fadeOut 1s;
+  animation-fill-mode: forwards;
+}
+@keyframes rotate{
+  100%{
+    transform: rotate(90deg);
+  }
+}
+@keyframes fadeOut{
+  100%{
+  opacity: 0;
+  visibility: hidden;
+  }
+}
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;

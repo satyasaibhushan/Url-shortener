@@ -49,10 +49,10 @@ let getUrls = async () => {
           cell3 = row.insertCell(2);
 
           a = document.createElement("a");
-          link = document.createTextNode("links.bhushan.fun/" + element.slug);
+          link = document.createTextNode(window.location.href + element.slug);
           a.appendChild(link);
-          a.title = "links.bhushan.fun/" + element.slug;
-          a.href = "https://links.bhushan.fun/" + element.slug;
+          a.title = window.location.href+ element.slug;
+          a.href = window.location.href + element.slug;
           cell1.appendChild(a);
 
           a = document.createElement("a");
