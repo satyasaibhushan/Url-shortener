@@ -11,6 +11,7 @@ const hostname = "127.0.0.1";
 
 dotenv.config();
 
+const verified_users =process.env.VERIFIED_USERS.split(",");
 const db = monk(process.env.MONGO_URI);
 const urls = db.get("urls");
 urls.createIndex({ slug: 1 }, { unique: true });
@@ -126,6 +127,10 @@ async function verify(token) {
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
-  if(userid == '117443434510256381405' || userid=="105100410867317572025")return true
+  let flag =0;
+  verified_users.forEach(ele=>{
+    if(ele == userid)flag=1;
+  })
+  if(flag == 1)return true
   else return false
 }
