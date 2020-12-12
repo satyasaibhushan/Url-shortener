@@ -14,4 +14,4 @@ As the website is not available, the preview of the website will look something 
 2) PORT(optional)
 3) VERIFIED_USERS(for access restriction)
 
-![alt](/sample "sample")
+![alt](/sample.png "sample")
