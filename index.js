@@ -43,7 +43,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", isLoggedin, async (req, res) => {
+  console.log('ey')
+  console.log(process.env.MONGO_URI)
   let url = await urls.find({});
+  console.log('ey1')
   url = url.map(ele => {
     return { slug: ele.slug, url: ele.url, count: ele.count ? ele.count : 0 };
   });
