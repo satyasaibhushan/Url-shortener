@@ -25,11 +25,8 @@ app.use(express.static("./public"));
 app.use("/error", express.static("error"));
 app.use(cookieParser());
 const isLoggedin = (req, res, next) => {
-  writeToFile("./test1.json", "hi logged in");
-
   if (req.header("bearer-token")) {
     verify(req.header("bearer-token")).then(response => {
-      writeToFile("./test2.json", response);
       if (response) next();
       else {
         res.sendStatus(404);
@@ -45,12 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", isLoggedin, async (req, res) => {
-  // writeToFile("./test4.json", urls);
-  console.log(urls)
-  console.log('a')
   let url = await urls.find({});
-  console.log(url)
-  writeToFile("./test4.json",await url);
   url = url.map(ele => {
     return { slug: ele.slug, url: ele.url, count: ele.count ? ele.count : 0 };
   });
