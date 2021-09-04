@@ -1,4 +1,4 @@
-# minesweeper
+# Link Shortener
 
 A link shortener using express, mongoDb and google authentication
 
