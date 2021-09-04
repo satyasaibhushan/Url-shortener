@@ -1,21 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const yup = require("yup");
-const monk = require("monk");
 const dotenv = require("dotenv");
 const { nanoid } = require("nanoid");
-const CLIENT_ID = "342980464169-2jqomrchsthgjpdafk50ba8akj22g2v0.apps.googleusercontent.com";
 const cookieParser = require("cookie-parser");
-const fs = require("fs");
+let { writeToFile, getFileData, removeSlug, getUrl, incrementCount, createUrl } = require("./urls");
+let filename = "data.json";
 
-const hostname = "127.0.0.1";
+// const hostname = "127.0.0.1";
 
 dotenv.config();
 
 const verified_users = process.env.VERIFIED_USERS.split(",");
-const db = monk(process.env.MONGO_URI);
-const urls = db.get("urls");
-urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
 
@@ -35,7 +31,7 @@ const isLoggedin = (req, res, next) => {
   } else res.sendStatus(404);
 };
 
-console.log('hello')
+console.log("hello");
 app.get("/", (req, res) => {
   res.json({
     message: "shorten your urls",
@@ -43,21 +39,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", isLoggedin, async (req, res) => {
-  console.log('ey')
-  console.log(process.env.MONGO_URI)
-  let url = await urls.find({});
-  console.log('ey1')
+  let url = await getFileData(filename);
   url = url.map(ele => {
     return { slug: ele.slug, url: ele.url, count: ele.count ? ele.count : 0 };
   });
   url = url.sort((a, b) => (b.count ? b.count : 0) - (a.count ? a.count : 0));
-  writeToFile("./test.json", { ...url });
   await res.json(url);
 });
 
 app.get("/delete/:slug", isLoggedin, async (req, res) => {
   let { slug } = req.params;
-  await urls.remove({ slug: slug });
+  await removeSlug(filename, slug);
   await res.json();
 });
 
@@ -65,11 +57,10 @@ app.get("/:id", async (req, res) => {
   let { id: slug } = req.params;
 
   try {
-    const url = await urls.findOne({ slug });
+    const url = await getUrl(filename, slug);
     if (url) {
-      res.redirect(url.url);
-      if (url.count >= 0) await urls.update({ slug }, { $inc: { count: 1 } });
-      else await urls.update({ slug }, { $set: { count: 1 } });
+      await res.redirect(url);
+      await incrementCount(filename, slug);
     } else res.redirect(`/error`);
   } catch (error) {
     console.log(error);
@@ -92,8 +83,7 @@ app.post("/url", isLoggedin, async (req, res, next) => {
       slug = nanoid(5);
     }
     slug = slug.toLowerCase();
-    const newUrl = { slug, url, count: 0 };
-    const created = await urls.insert(newUrl);
+    const created = await createUrl(filename, slug, url);
     res.json(created);
   } catch (error) {
     if (error.message.startsWith("E11000 duplicate key error collection")) {
@@ -128,10 +118,10 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 
 async function verify(token) {
   const { OAuth2Client } = require("google-auth-library");
-  const client = new OAuth2Client(CLIENT_ID);
+  const client = new OAuth2Client(process.env.CLIENT_ID);
   const ticket = await client.verifyIdToken({
     idToken: token,
-    audience: CLIENT_ID,
+    audience: process.env.CLIENT_ID,
   });
   const payload = ticket.getPayload();
   const userid = payload["sub"];
@@ -142,11 +132,3 @@ async function verify(token) {
   if (flag == 1) return true;
   else return false;
 }
-
-const writeToFile = (filename, obj) => {
-  fs.writeFile(filename, JSON.stringify(obj), function (err) {
-    if (err) {
-      return console.log(err);
-    }
-  });
-};
