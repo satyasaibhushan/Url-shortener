@@ -35,6 +35,7 @@ const isLoggedin = (req, res, next) => {
   } else res.sendStatus(404);
 };
 
+console.log('hello')
 app.get("/", (req, res) => {
   res.json({
     message: "shorten your urls",
