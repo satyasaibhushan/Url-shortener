@@ -44,6 +44,7 @@ app.get("/urls",isLoggedin, async (req, res) => {
   let url = await urls.find();
   url = url.map(ele=>{return {slug:ele.slug,url:ele.url,count:ele.count?ele.count:0}})
   url = url.sort((a,b)=> (b.count?b.count:0)-(a.count?a.count:0))
+  console.log(url)
   await res.json(url);
 });
 
