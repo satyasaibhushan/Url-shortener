@@ -16,6 +16,7 @@ var initSigninV2 = async () => {
   });
   auth2
     .then(async googleUser => {
+      // console.log(googleUser);
       await signIn();
       //   if (auth2.isSignedIn.get() != true) {
       //     await signIn();
@@ -45,7 +46,7 @@ let signIn = async () => {
       verify(id_token);
     });
   } else {
-    googleUser = auth2.currentUser.Wd;
+    googleUser = auth2.currentUser.get();
     id_token = googleUser.getAuthResponse().id_token;
     await verify(id_token);
   }
